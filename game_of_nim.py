@@ -47,7 +47,8 @@ class GameOfNim(Game):
         """Legal moves are at least one object, all from the same row."""
         # pair (a, b) where a is the row and b iters from val-1 as ...[1, val]
         moves = []
-        for row_index, row_value in enumerate(self.board):
+        for row_index, row_value in enumerate(state):
+            if row_value == 0: continue
             for iterator in range(0, row_value):
                 moves.append((row_index, iterator+1))
             # end for
@@ -58,43 +59,54 @@ class GameOfNim(Game):
         # Given a state and what action to take... return the resulting state!
         # state = [(a,b), (c,d)...], and move = (a, b)
         row_index, sticks_removed = move
-        state[row_index] = state[row_index] - sticks_removed
-        return state
+        new_state = state.copy()
+        new_state[row_index] = state[row_index] - sticks_removed
+        return new_state
 
     def utility(self, state, player):
         """Return the value to player; 1 for win, -1 for loss, 0 otherwise."""
-        print(player)
         if self.terminal_test(state):
-            # Todo: Win Check
-            # Check player = winner/loser?
-            return 1
+            # Todo: Will need to implement properly
+            # Assume with counter: even = loss, odd = win
+            if player == 0:
+                return -1
+            else:
+                return 1
         return 0
-
 
     def terminal_test(self, state):
         """A state is terminal if there are no objects left"""
         return self.isBoardEmpty(state)
 
     def display(self, state):
-        board = state.board
+        board = state
         print("board: ", board)
+
+    def to_move(self, state):
+        # Todo: Implement a way to detect Player
+        # May return string, etc, but must match in Utility afterwards
+        return 0
 
     def isBoardEmpty(self, state):
         _val = True
         for x in state:
-            if x != 0:
-                _val = False
+            if x <= 0:
+                return False
         return _val
 
 if __name__ == '__main__':
     nim = GameOfNim(board=[0, 5, 3, 1])  # Creating the game instance
     # nim = GameOfNim(board=[7, 5, 3, 1]) # a much larger tree to search
-    print(nim.initial)  # must be [0, 5, 3, 1]
-    print(nim.actions(nim.initial))  # must be [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (2, 1), (2, 2), (2, 3), (3, 1)]
-    print(nim.result(nim.initial, (1, 3)))
+    # print(nim.initial)  # must be [0, 5, 3, 1]
+    # print(nim.actions(nim.initial))  # must be [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (2, 1), (2, 2), (2, 3), (3, 1)]
+    # print(nim.result(nim.initial, (1, 3)))
 
     utility = nim.play_game(alpha_beta_player, query_player)  # computer moves first
     if (utility < 0):
         print("MIN won the game")
     else:
         print("MAX won the game")
+
+'''
+Issue: AB_Player returns the board state with EVERY
+'''
