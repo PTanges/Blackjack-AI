@@ -1,44 +1,16 @@
 from games import *
+import random
 
 # Student(s): Patton Tang
 # Course: CPSC-481
 # Due Date: 2024-04-19
-
-'''
-constructor: int array
-valid moves/actions: int tuples
-	{ index arrayval
-	index arrayval-1 until == 1 }
-funct result(state, move): {
-	return new_state}
-funct actions(state): {
-	return actions array}
-funct terminal test(state): {
-	return True if state = end
-	ie all of array = 0}
-funct utility(state, player): {
-	returns +1 for MAX win
-	returns -1 for MIN win
-	- loser det by who picked LAST / "Next turn" player wins
-funct to_move(state): {
-	returns player who's turn it is to move
-	- default impl in abstr: Game is enough
-
-Note:
-Consider overriding Game.play_game() to print the current state & player
-
-Requirements:
-- Extend class(Game)
-- Represent state by int array
-- Action removes obj from ONE pile (of range [1, n])
-'''
 
 class GameOfNim(Game):
     """Play Game of Nim with first player 'MAX'.
     A state has the player to move, a cached utility, a list of moves in
     the form of a list of (x, y) positions, and a board, in the form of
     a list with number of objects in each row."""
-    _counter = 0
+    _isWin = -1
 
     def __init__(self, board=[]):
         self.board = [int(x) for x in board]
@@ -68,10 +40,13 @@ class GameOfNim(Game):
 
     def utility(self, state, player):
         """Return the value to player; 1 for win, -1 for loss, 0 otherwise."""
-        print(f'{state} & {player}')
+        # Winner determined by if there's all 0's and only ONE 1.
+        _sum = 0
+        for x in player:
+            _sum += x
+        if _sum == 1: self._isWin = 1
 
-        # if {} to decide who won...
-        return -1
+        return self._isWin
 
     def terminal_test(self, state):
         """A state is terminal if there are no objects left"""
@@ -97,7 +72,3 @@ if __name__ == '__main__':
         print("MIN won the game")
     else:
         print("MAX won the game")
-
-'''
-Issue: AB_Player returns the board state with EVERY
-'''
