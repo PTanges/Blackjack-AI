@@ -5,6 +5,10 @@ import random
 # Course: CPSC-481
 # Due Date: 2024-04-19
 
+class Board:
+    def __init__(self, board=[]):
+        self.board = [int(x) for x in board]
+
 class GameOfNim(Game):
     """Play Game of Nim with first player 'MAX'.
     A state has the player to move, a cached utility, a list of moves in
@@ -13,7 +17,7 @@ class GameOfNim(Game):
     _isWin = -1
 
     def __init__(self, board=[]):
-        self.board = [int(x) for x in board]
+        self.board = Board(board)
         self.initial = [int(x) for x in board]
 
     def actions(self, state):
