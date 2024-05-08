@@ -15,13 +15,12 @@ class Blackjack_Player:
     def remove_actions(self):
         self.moves.clear()
 
-class Query_Player():
-    hand = []
-    hand_value = 0
-    moves = []
-    action = ""
+class Query_Player(Blackjack_Player):
     name = "Query"
     def __init__(self):
+        self.hand = []
+        self.hand_value = 0
+        self.action = ""
         self.moves = ["Hit", "Stand"]
 
     def choose_action(self, deck, suit_names):
@@ -60,13 +59,12 @@ class Query_Player():
         self.moves.clear()
 
 
-class Monte_Carlo_Player():
-    hand = []
-    hand_value = 0
-    moves = []
-    action = ""
+class Monte_Carlo_Player(Blackjack_Player):
     name = "Monte Carlo"
     def __init__(self):
+        self.hand = []
+        self.hand_value = 0
+        self.action = ""
         self.iterations = 100
         self.moves = ["Hit", "Stand"]
 
