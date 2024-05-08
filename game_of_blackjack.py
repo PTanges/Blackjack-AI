@@ -25,7 +25,8 @@ class Blackjack:
                 if player.hand_value >= 21:
                     break
 
-        self.display(players)
+        self.display(game_players)
+        print(self.determine_winner(game_players))
 
     def actions(self, player):
         self.evaluate_hand_value(player)
@@ -61,6 +62,34 @@ class Blackjack:
             print(f'Player Name: {player.name}\n'
                   f'Hand: {player_hand}\n'
                   f'Hand Value: {player.hand_value}\n')
+
+    def determine_winner(self, players):
+        winner_hand_value = 0
+        winner_card_quantity = 0
+        winner_name = "None"
+
+        for player in players:
+            if player.hand_value > 21: continue
+
+            if player.hand_value > winner_hand_value: # Maximum non-bust
+                winner_hand_value = player.hand_value
+                winner_card_quantity = len(player.hand)
+                winner_name = player.name
+            elif player.hand_value == 21: # 21
+                if player.hand_value > winner_hand_value: # Blackjack win
+                    winner_hand_value = player.hand_value
+                    winner_card_quantity = len(player.hand)
+                    winner_name = player.name
+                elif len(player.hand) < winner_card_quantity: # Blackjack beats 21
+                    winner_hand_value = player.hand_value
+                    winner_card_quantity = len(player.hand)
+                    winner_name = player.name
+                elif len(player.hand) == winner_card_quantity: # Blackjack Tie
+                    winner_name = winner_name + ", " + player.name
+            elif winner_hand_value == player.hand_value: # Non-Blackjack Tie, assuming above are checked
+                winner_name = winner_name + ", " + player.name
+
+        return winner_name + " wins!"
 
     def convert_internal_card_number_to_face_name(self, internal_card_number):
         _internal_card_map = {11: "Jack", 12: "Queen", 13: "King", 14: "Ace"}
