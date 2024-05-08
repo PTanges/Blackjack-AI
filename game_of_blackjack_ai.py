@@ -12,18 +12,59 @@ class Blackjack_Player:
     def choose_action(self):
         raise NotImplementedError
 
-class Query_Player(Blackjack_Player):
+    def remove_actions(self):
+        self.moves.clear()
+
+class Query_Player():
+    hand = []
+    hand_value = 0
+    moves = []
+    action = ""
     name = "Query"
     def __init__(self):
-        # super.__init__(variable) only when passing to parent constructor
-        pass
+        self.moves = ["Hit", "Stand"]
 
-    def choose_action(self):
-        pass
-    # Prompt Player for Action
+    def choose_action(self, deck, suit_names):
+        self.display_query_status(deck, suit_names)
+        print(f'Available moves: {self.moves}\n')
+
+        move_string = ""
+        while move_string not in self.moves:
+            move_string = input('Your move: ')
+            if move_string == "Hit" or move_string == "Stand":
+                self.action = move_string
+            else:
+                print("invalid command, try again\n")
+
+    def display_query_status(self, deck, suit_names):
+        player_hand = []
+        _internal_card_map = {11: "Jack", 12: "Queen", 13: "King", 14: "Ace"}
+        for card in self.hand:
+            cards = ""
+            _ICN = list(card.keys())
+            _internal_card_number = _ICN[0]
+            _suit = card[_internal_card_number]
+
+            if _internal_card_number > 10:
+                cards += _internal_card_map[_internal_card_number]
+            else:
+                cards += str(_internal_card_number)
+            cards = cards + " of " + _suit
+            player_hand.append(cards)
+
+        print(f'Player Name: {self.name}\n'
+              f'Hand: {player_hand}\n'
+              f'Hand Value: {self.hand_value}\n')
+
+    def remove_actions(self):
+        self.moves.clear()
 
 
-class Monte_Carlo_Player(Blackjack_Player):
+class Monte_Carlo_Player():
+    hand = []
+    hand_value = 0
+    moves = []
+    action = ""
     name = "Monte Carlo"
     def __init__(self):
         self.iterations = 100

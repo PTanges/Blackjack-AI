@@ -125,6 +125,7 @@ class Blackjack:
 
 if __name__ == "__main__":
     game = Blackjack(deck_size=1)
+    Q_Player = AI.Query_Player()
     MC_Player = AI.Monte_Carlo_Player()
-    game.play_game(MC_Player)
+    game.play_game(Q_Player, MC_Player)
     # game.play_game(AI.Query_Player, AI.Monte_Carlo_Player, AI.House_Player)
