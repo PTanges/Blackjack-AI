@@ -1,4 +1,5 @@
 from games import *
+import blackjack_ai_players
 import random
 
 # Student(s): Patton Tang
@@ -49,20 +50,23 @@ In case the above isn't complex enough... we can make a player who aims to win
 - Bets are also not included
 '''
 
-class GameOfBlackjack(StochasticGame):
+class GameOfBlackjack(Game):
     suit_names = ["Spades", "Hearts", "Diamonds", "Clubs"] # "_ of suit_name"
     def __init__(self, deck_size = 1):
         '''
         Populate Deck
         - "Exceptions": {11: Jack, 12: Queen, 13: King, 14: Ace}
         '''
-        self.deck = {}
-        for i in range(2, 15):
-            self.deck[i] = {}
-            for suit in self.suit_names:
-                self.deck[i][suit] = deck_size
+        moves = []
+        # moves = ["Hit", "Stand"]
 
-        # self.player_hand_values = []
+        deck = {}
+        for i in range(2, 15):
+            deck[i] = {}
+            for suit in self.suit_names:
+                deck[i][suit] = deck_size
+
+        self.initial = GameState(to_move="Query", utility=0, board=deck, moves=moves)
 
         # Las Vegas Algorithm for Choosing a Card
         # May need to hold two arrays [] for valid card choices
@@ -70,7 +74,6 @@ class GameOfBlackjack(StochasticGame):
         # available_suits (c, d) of length n
         # - after each valid pull, scan row in card_values to update, and adjust as necessary
 
-        moves = ["Hit", "Stand"]
         # House removes Hit if (hand < Player's_hand) & (21 <= hand value >= 17), this becomes OR with 2+ players
         # House removes Stand if (hand < 17)
 
@@ -87,5 +90,34 @@ class GameOfBlackjack(StochasticGame):
         # - House AI is (nearly) entirely dictated by the rules
         # - may complexify by allowing it to decide how many player should lose, *maximizing* that
 
+    def result(self, state, move):
+        if move == None: return state
+        if state.board == None: return state
+
+        new_deck = state.board.copy()
+        valid_moves = []
+        new_utility = 0
+
+
+
+    def actions(self, state):
+        return state.moves
+
+    def utility(self, state, player):
+        return state.utility
+
+    def terminal_test(self, state):
+        return state.utility != 0 or len(state.moves) == 0
+
+    def display(self, state):
+        hand = state.hand
+        print("Player Hand: ", hand)
+
+    def to_move(self, state):
+        return state.to_move
+
 if __name__ == "__main__":
     game = GameOfBlackjack(deck_size=1)
+    utility = game.play_game(query_player, blackjack_ai_players.monte_carlo_player, blackjack_ai_players.blackjack_house_player)
+
+    print(utility)
