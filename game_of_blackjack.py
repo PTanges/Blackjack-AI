@@ -13,10 +13,9 @@ class Blackjack:
     def play_game(self, *players):
         # Include a way to move the House player (if added) to the last index
         game_players = []
-        for player in players:
-            game_players.append(player)
-
+        self.reorder_player_list(game_players, players)
         self.deal_starting_hands(game_players)
+
         for player in game_players:
             self.actions(player)
             while len(player.moves) > 0:
@@ -27,9 +26,6 @@ class Blackjack:
                     break
 
         self.display(players)
-
-    def change_player_turn(self):
-        pass
 
     def actions(self, player):
         self.evaluate_hand_value(player)
@@ -123,10 +119,18 @@ class Blackjack:
 
         player.hand_value = new_hand_value
 
+    def reorder_player_list(self, game_players, players):
+        # Shift House to the end of the list
+        for player in players:
+            game_players.append(player)
+
+
 if __name__ == "__main__":
-    game = Blackjack(deck_size=1)
+    game = Blackjack(deck_size=4)
+
     Q_Player = AI.Query_Player()
     MC_Player1 = AI.Monte_Carlo_Player()
     MC_Player2 = AI.Monte_Carlo_Player()
-    game.play_game(Q_Player, MC_Player1, MC_Player2)
-    # game.play_game(AI.Query_Player, AI.Monte_Carlo_Player, AI.House_Player)
+    HP = AI.House_Player()
+
+    game.play_game(Q_Player, MC_Player1, MC_Player2, HP)

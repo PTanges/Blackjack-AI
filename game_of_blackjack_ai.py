@@ -135,7 +135,15 @@ class House_Player(Blackjack_Player):
     name = "House"
     minimum_hand_value = 17
     def __init__(self):
-        pass
+        self.hand_value = 0
+        self.action = ""
+        self.moves = ["Hit", "Stand"]
 
-    def choose_action(self):
-        pass
+    def choose_action(self, deck, suit_names):
+        if self.hand_value < self.minimum_hand_value:
+            self.action = "Hit"
+        else:
+            self.action = "Stand"
+
+    def remove_actions(self):
+        self.moves.clear()
