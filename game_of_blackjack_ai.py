@@ -1,4 +1,3 @@
-import game_of_blackjack as game
 import random
 
 class Blackjack_Player:
@@ -73,6 +72,7 @@ class Monte_Carlo_Player(Blackjack_Player):
             self.moves.clear()
             return
 
+        # Monte Carlo Algorithm
         bustrate = 0
         for i in range(0, self.iterations):
             _picked_card = self.peek_random_card(deck, suit_names)
