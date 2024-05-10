@@ -147,3 +147,5 @@ class House_Player(Blackjack_Player):
 
     def remove_actions(self):
         self.moves.clear()
+
+# Additional Player ideas: {Card_Counter_Player, Informed_Query_Player (uses card counting)}

@@ -23,7 +23,7 @@ class Blackjack:
                 self.result(player)
                 self.evaluate_hand_value(player)
                 if player.hand_value >= 21:
-                    break
+                    player.remove_actions()
 
         self.display(game_players)
         print(self.determine_winner(game_players))
